@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from django.contrib.gis.db import models as gis_models
+from common.gis import gis_models
 from django.conf import settings
 
 VERIFICATION_STATUS_CHOICES = (
@@ -26,7 +26,7 @@ class NGOProfile(models.Model):
     rejection_reason = models.TextField(blank=True, null=True)
     capacity_per_day = models.IntegerField(default=100)
     address = models.TextField()
-    location = gis_models.PointField(srid=4326)
+    location = gis_models.PointField(srid=4326, null=True, blank=True)
     rating_avg = models.DecimalField(max_digits=3, decimal_places=2, default=5.00)
 
     # Notification preferences
@@ -47,7 +47,7 @@ class NGOFoodRequest(models.Model):
     quantity_meals_needed = models.IntegerField()
     urgency_level = models.CharField(max_length=20, choices=URGENCY_LEVEL_CHOICES, default='medium')
     address = models.TextField()
-    location = gis_models.PointField(srid=4326)
+    location = gis_models.PointField(srid=4326, null=True, blank=True)
     is_fulfilled = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

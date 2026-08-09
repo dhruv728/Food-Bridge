@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from django.contrib.gis.db import models as gis_models
+from common.gis import gis_models
 from apps.donations.models import Donation
 from apps.volunteers.models import VolunteerProfile
 
@@ -29,7 +29,7 @@ class Task(models.Model):
 class TaskLocationLog(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='location_logs')
-    location = gis_models.PointField(srid=4326)
+    location = gis_models.PointField(srid=4326, null=True, blank=True)
     recorded_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

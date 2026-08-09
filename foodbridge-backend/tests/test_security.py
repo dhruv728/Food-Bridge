@@ -16,7 +16,7 @@ class OWASPSecurityTests(APITestCase):
         """OWASP A01: Broken Access Control - Unauthenticated user blocked from admin endpoints"""
         url = reverse('admin-dashboard-stats')
         response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHENTICATED)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_non_admin_role_access_denied(self):
         """OWASP A01: Broken Access Control - Non-admin user blocked from admin endpoints"""

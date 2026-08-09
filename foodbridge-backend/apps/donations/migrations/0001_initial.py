@@ -1,5 +1,5 @@
 import uuid
-import django.contrib.gis.db.models.fields
+from common.gis import gis_models
 from django.db import migrations, models
 import django.db.models.deletion
 
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('estimated_meals', models.IntegerField()),
                 ('perishability_window', models.DateTimeField()),
                 ('pickup_address', models.TextField()),
-                ('pickup_location', django.contrib.gis.db.models.fields.PointField(srid=4326)),
+                ('pickup_location', gis_models.PointField(blank=True, null=True, srid=4326)),
                 ('status', models.CharField(choices=[('listed', 'Listed'), ('claimed', 'Claimed'), ('assigned', 'Assigned'), ('picked_up', 'Picked Up'), ('in_transit', 'In Transit'), ('delivered', 'Delivered'), ('confirmed', 'Confirmed'), ('closed', 'Closed'), ('cancelled', 'Cancelled'), ('expired', 'Expired')], default='listed', max_length=20)),
                 ('images', models.JSONField(blank=True, default=list)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),

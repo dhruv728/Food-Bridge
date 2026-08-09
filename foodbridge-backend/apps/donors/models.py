@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from django.contrib.gis.db import models as gis_models
+from common.gis import gis_models
 from django.conf import settings
 
 DONOR_TYPE_CHOICES = (
@@ -18,7 +18,7 @@ class DonorProfile(models.Model):
     organization_name = models.CharField(max_length=255)
     donor_type = models.CharField(max_length=30, choices=DONOR_TYPE_CHOICES, default='restaurant')
     address = models.TextField()
-    location = gis_models.PointField(srid=4326)
+    location = gis_models.PointField(srid=4326, null=True, blank=True)
     rating_avg = models.DecimalField(max_digits=3, decimal_places=2, default=5.00)
     
     # Donor Notification Settings

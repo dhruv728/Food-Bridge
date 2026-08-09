@@ -1,8 +1,7 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
-from datetime import timedelta
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 ROLE_CHOICES = (
     ('donor', 'Donor'),
@@ -12,6 +11,31 @@ ROLE_CHOICES = (
     ('admin', 'Admin (Platform Ops)'),
     ('superadmin', 'Super Admin'),
 )
+
+class UserManager(BaseUserManager):
+    def create_user(self, phone_number=None, email=None, password=None, username=None, **extra_fields):
+        username = username or phone_number
+        if not username and not phone_number:
+            raise ValueError('Either phone_number or username must be set')
+        if not phone_number:
+            phone_number = username
+        if email:
+            email = self.normalize_email(email)
+        extra_fields.setdefault('username', username)
+        extra_fields.setdefault('phone_number', phone_number)
+        user = self.model(email=email, **extra_fields)
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, phone_number, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('role', 'superadmin')
+        return self.create_user(phone_number=phone_number, password=password, **extra_fields)
 
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -24,6 +48,8 @@ class User(AbstractUser):
     is_verified = models.BooleanField(default=False)  # Overall verified status
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = UserManager()
 
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['full_name', 'role']

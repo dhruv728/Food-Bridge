@@ -28,7 +28,7 @@ class AdminDashboardStatsView(APIView):
         stats = {
             'total_users': User.objects.count(),
             'pending_ngo_verifications': NGOProfile.objects.filter(verification_status='pending').count(),
-            'pending_donor_verifications': DonorProfile.objects.filter(is_verified=False).count(),
+            'pending_donor_verifications': DonorProfile.objects.filter(user__is_verified=False).count(),
             'active_volunteers': VolunteerProfile.objects.filter(is_available=True).count(),
             'total_donations': Donation.objects.count(),
             'active_deliveries': Task.objects.filter(status__in=['assigned', 'picked_up', 'in_transit']).count(),

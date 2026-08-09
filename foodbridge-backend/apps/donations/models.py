@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from django.contrib.gis.db import models as gis_models
+from common.gis import gis_models
 from apps.donors.models import DonorProfile
 
 DONATION_STATUS_CHOICES = (
@@ -29,7 +29,7 @@ class Donation(models.Model):
     estimated_meals = models.IntegerField()
     perishability_window = models.DateTimeField()
     pickup_address = models.TextField()
-    pickup_location = gis_models.PointField(srid=4326)
+    pickup_location = gis_models.PointField(srid=4326, null=True, blank=True)
     status = models.CharField(max_length=20, choices=DONATION_STATUS_CHOICES, default='listed')
     images = models.JSONField(default=list, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -52,7 +52,7 @@ class RecurringDonationSchedule(models.Model):
     frequency = models.CharField(max_length=20, choices=RECURRING_FREQUENCY_CHOICES, default='daily')
     time_of_day = models.TimeField()
     pickup_address = models.TextField()
-    pickup_location = gis_models.PointField(srid=4326)
+    pickup_location = gis_models.PointField(srid=4326, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

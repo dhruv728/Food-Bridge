@@ -1,5 +1,5 @@
 import uuid
-import django.contrib.gis.db.models.fields
+from common.gis import gis_models
 from django.db import migrations, models
 import django.db.models.deletion
 
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             name='TaskLocationLog',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('location', django.contrib.gis.db.models.fields.PointField(srid=4326)),
+                ('location', gis_models.PointField(blank=True, null=True, srid=4326)),
                 ('recorded_at', models.DateTimeField(auto_now_add=True)),
                 ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='location_logs', to='tasks.task')),
             ],

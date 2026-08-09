@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from django.contrib.gis.db import models as gis_models
+from common.gis import gis_models
 from django.conf import settings
 
 VEHICLE_TYPE_CHOICES = (

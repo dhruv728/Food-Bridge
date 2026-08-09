@@ -1,6 +1,6 @@
 import random
 import string
-from django.contrib.gis.geos import Point
+from common.gis import Point
 
 def generate_otp_code(length=6):
     return ''.join(random.choices(string.digits, k=length))
